@@ -1,6 +1,5 @@
 # Terraform to create ec2 instances on aws
 
-
 # Configure the AWS Provider
 provider "aws" {
     access_key = "${local.access_key}"
@@ -26,26 +25,30 @@ resource "aws_subnet" "subnet1" {
     }
 }
 
+#Security Group to allow traffic on ports 80 and 22 (ssh)
 
 resource "aws_security_group" "xyclient" {
     vpc_id = "${aws_vpc.xyclient.id}"
-
+    #Inbount Ports for port 80 to open the web
     ingress {
-        cidr_blocks = [
-            "${aws_vpc.xyclient.cidr_block}"
-        ]
+        cidr_blocks = ["0.0.0.0/0"]        ]
         from_port = 80
         to_port = 80
         protocol = "tcp" 
     }
-
+    # Inbound port for ssh
     ingress {
-        cidr_blocks = [
-            "${aws_vpc.xyclient.cidr_block}"
-        ]
-        from_port = 8080
-        to_port = 8080
+        cidr_blocks = ["0.0.0.0/0"] 
+        from_port = 22
+        to_port = 22
         protocol = "tcp" 
+    }
+
+    egress {
+        from_port = 0
+        to_port = 0
+        protocol = -1
+
     }
 }
 
@@ -54,8 +57,10 @@ resource "aws_key_pair" "tfadmin" {
     public_key = "${local.public_key}"
 }
 
+
+
+#Create ec2 instance within the xyclient VPC and under subnet1
 resource  "aws_instance" "webserver" {
-    count = "${var.ec2_count}"
     ami = "${data.aws_ami.ubuntu.id}"
     instance_type = "t2.micro"
     key_name = "${aws_key_pair.tfadmin.key_name}"
@@ -64,8 +69,17 @@ resource  "aws_instance" "webserver" {
     source_dest_check = false
 
     tags{
-        name = "webserver-${count.index+1}"
+        name = "webserver"
+        environment = "test"
     }
+
+#Create Elastic IP for the instance to be publicly available 
+resource "aws_eip" "xyclient_web" {
+  instance = "${aws_instance.webserver.id}"
+  vpc      = true
+}
+    
+
 }
 
 
