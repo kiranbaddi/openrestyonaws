@@ -1,4 +1,4 @@
-ProjectName: openrestyonaws
+<b>ProjectName: openrestyonaws</b>
 Objective : Run a Dockerized openresty application on aws
 
 
