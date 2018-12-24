@@ -1,0 +1,17 @@
+---
+- name: Installing Nagios
+  apt:
+   update_cache: yes
+   name: nagios3
+
+- name: Copy contacts and service files for monitoring openresty
+  copy:
+   src: contacts_nagios2.cfg   
+   dest: /etc/nagios3/conf.d/contacts_nagios2.cfg
+
+- name: Copy contacts and service files for monitoring openresty
+  copy:
+   src: services_nagios2.cfg
+   dest: /etc/nagios3/conf.d/services_nagios2.cfg
+
+

@@ -1,0 +1,11 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+  - name: Start openresty server on port 80
+    docker:
+     name: openresty
+     image: openresty
+     state: started
+     ports:
+     - "80:80"

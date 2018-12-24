@@ -1,3 +1,0 @@
-    access_key = "AKIAIYJSEWRAWKWRHY2Q}"
-    secret_key = "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"
-    public_key = "$ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCWp6+0BWZs2/a5cTaTXmJEissBmXv9eQ/7QKHlWeDUyHgO9eGjrNvb7GdA+tkjoRbzTYmua7uj7hqGi7FCOHnd/h4p0HVXjbxJcUaqAwgctRxhsTzxYfts2PkhRD/aFXWKtJXrVlRIcEnbQ0F9T5ULbKzzGRAJVibdPVZXMzRCJmNhDKcgYkel4sk0idx9J5ilt4JZHrMJ1IQZscZu/Ry49VVFCDR4MyX8MdpiuPdcDs2q51AW/vvD8jRiPnY4a9U2fhj/jWBlC7kkWkBlE5fNU3NJIwrIFvlNC/AIClS6Tje/A291uAXUTBP6xD2+bbviSq+qoDm8/ZEyfXx/fB0f kbaddi@WinPlayG"

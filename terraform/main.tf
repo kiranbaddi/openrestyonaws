@@ -8,30 +8,19 @@ provider "aws" {
 
 }
 
-resource "aws_vpc" "xyclient" {
-    cidr_block = "${var.vpc_cidr}"
-    instance_tenancy = "default"
-    tags {
-        name = "xyclient"
-    }
-}
+#user data template.
 
-resource "aws_subnet" "subnet1" {
-    vpc_id = "${aws_vpc.xyclient.id}"
-    cidr_block = "${var.subnet_cidr}"
-
-    tags {
-        name = "Subnet1"
-    }
+data "template_file" "webserver" {
+  template = "${file("${path.module}/templates/initscript.tpl")}"
 }
 
 #Security Group to allow traffic on ports 80 and 22 (ssh)
 
-resource "aws_security_group" "xyclient" {
-    vpc_id = "${aws_vpc.xyclient.id}"
+resource "aws_security_group" "xyclient_sg" {
+    
     #Inbount Ports for port 80 to open the web
     ingress {
-        cidr_blocks = ["0.0.0.0/0"]        ]
+        cidr_blocks = ["0.0.0.0/0"]
         from_port = 80
         to_port = 80
         protocol = "tcp" 
@@ -50,37 +39,34 @@ resource "aws_security_group" "xyclient" {
         protocol = -1
 
     }
+    
+    tags {
+        name = "xyclient_sg"
+    }
 }
 
-resource "aws_key_pair" "tfadmin" {
-    key_name = "${var.key_name}"
-    public_key = "${local.public_key}"
-}
-
-
-
-#Create ec2 instance within the xyclient VPC and under subnet1
+#Create ec2 instance within default VPC (assuming the account is only for one client)
 resource  "aws_instance" "webserver" {
     ami = "${data.aws_ami.ubuntu.id}"
     instance_type = "t2.micro"
     key_name = "${aws_key_pair.tfadmin.key_name}"
-    vpc_security_group_ids = ["${aws_security_group.xyclient.id}"] subnet_id = "${aws_subnet.subnet1.id}"
     associate_public_ip_address = true
     source_dest_check = false
+
+    user_data = "${data.template_file.webserver.rendered}"
+    key_name  = "${var.aws_key_pair}"
 
     tags{
         name = "webserver"
         environment = "test"
     }
-
-#Create Elastic IP for the instance to be publicly available 
-resource "aws_eip" "xyclient_web" {
-  instance = "${aws_instance.webserver.id}"
-  vpc      = true
 }
+
+
+
     
 
-}
+
 
 
 
