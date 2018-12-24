@@ -1,14 +1,11 @@
 #!/bin/bash
 sudo apt-get update
-sudo apt-get install build-essential dh-make devscripts lintian -y
+# Install dependencies
+sudo apt-get install build-essential dh-make devscripts lintian zlib -y
 sudo apt-get install libpcre3-dev libssl-dev perl make build-essential curl -y
 mkdir openresty
 cd openresty
-if [ ! -f openresty-1.13.6.2.tar.gz ]
-then
 wget https://openresty.org/download/openresty-1.13.6.2.tar.gz
-tar zxvf openresty-1.13.6.2.tar.gz
-fi
 cd  openresty-1.13.6.2
 
 dh_make -f ../openresty-1.13.6.2.tar.gz --s -y
