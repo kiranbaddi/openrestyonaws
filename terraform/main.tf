@@ -34,6 +34,7 @@ resource "aws_security_group" "xyclient_sg" {
     }
 
     egress {
+        cidr_blocks = ["0.0.0.0/0"]     
         from_port = 0
         to_port = 0
         protocol = -1
@@ -52,6 +53,8 @@ resource  "aws_instance" "webserver" {
     key_name = "${aws_key_pair.tfadmin.key_name}"
     associate_public_ip_address = true
     source_dest_check = false
+
+    vpc_security_group_ids = ["${aws_security_group.xyclient_sg.id}"]
 
     user_data = "${data.template_file.webserver.rendered}"
     key_name  = "${var.aws_key_pair}"
