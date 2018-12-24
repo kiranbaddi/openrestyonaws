@@ -38,6 +38,3 @@ sudo apt-get update
 #	Install latest version of Docker CE
 sudo apt-get install docker-ce -y
 
-#Create Debian Package
-
-sudo bash ./package_openresty.sh
