@@ -1,5 +1,5 @@
-<b>ProjectName: openrestyonaws</b>
-Objective : Run a Dockerized openresty application on aws
+<b>ProjectName</b>: openrestyonaws
+<b>Objective</b> : Run a Dockerized openresty application on aws
 
 
 
